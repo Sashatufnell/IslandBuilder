@@ -68,9 +68,10 @@ public class MapFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.fragment_map, container, false);
         RecyclerView rv= rootView.findViewById(R.id.mapRecyclerView);
-        int spanCount = 2;
+        int spanCount = md.HEIGHT;
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), spanCount,
-                HORIZONTAL, false);
+               HORIZONTAL, false);
+        //rv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false));
         rv.setLayoutManager(gridLayoutManager);
         MyDataAdapter adapter = new MyDataAdapter(md);
         rv.setAdapter(adapter);
