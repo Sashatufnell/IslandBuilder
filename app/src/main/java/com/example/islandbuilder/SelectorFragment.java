@@ -17,7 +17,7 @@ import android.widget.Toast;
  * Use the {@link SelectorFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SelectorFragment extends Fragment {
+public class SelectorFragment extends Fragment implements MyAdapterSelector.itemClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -70,17 +70,28 @@ public class SelectorFragment extends Fragment {
         RecyclerView rv= rootView.findViewById(R.id.selectorRecyclerView);
         /* For setting vertical scrolling*/
         rv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false));
-        MyAdapterSelector adapter = new MyAdapterSelector(sd);
+        MyAdapterSelector adapter = new MyAdapterSelector(sd,this);
         rv.setAdapter(adapter);
-        Bundle result = new Bundle();
-        if(adapter.getClickedStructure()!=null){
-            Toast.makeText(getContext(), "Worked ",
-                    Toast.LENGTH_SHORT).show();
-            lastStructure = adapter.getClickedStructure();
-            result.putInt("id",lastStructure.getDrawableId());
-            getParentFragmentManager().setFragmentResult("fromSelector", result);
-        }
+
+
+       // if(adapter.getClickedStructure()!=null) {
+         //   if (adapter.getClickedStructure().getLabel().equals("go")) {
+         //       Toast.makeText(getContext(), "Worked ",
+          //              Toast.LENGTH_SHORT).show();
+           //     lastStructure = adapter.getClickedStructure();
+
+        //    }
+        //}
 
         return rootView;
+    }
+
+    @Override
+    public void onItemClick(Structure structure) {
+        Bundle result = new Bundle();
+        result.putInt("id", structure.getDrawableId());
+        getParentFragmentManager().setFragmentResult("fromSelector", result);
+
+
     }
 }

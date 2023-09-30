@@ -20,9 +20,12 @@ import java.util.ArrayList;
 public class MyAdapterSelector extends RecyclerView.Adapter<MyDataVHSelector> {
 
     StructureData data;
-    Structure clickedStructure = new Structure(R.drawable.ic_building1,"house");
-    public MyAdapterSelector(StructureData data){
+    Structure clickedStructure;
+    itemClickListener clickListener;
+    public MyAdapterSelector(StructureData data, itemClickListener clickListener){
         this.data = data;
+        this.clickListener = clickListener;
+        clickedStructure = new Structure(R.drawable.ic_building1,"wait");
     }
     @NonNull
     @Override
@@ -43,10 +46,11 @@ public class MyAdapterSelector extends RecyclerView.Adapter<MyDataVHSelector> {
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickedStructure = singleData;
-                AppCompatActivity activity = (AppCompatActivity)view.getContext();
-                SelectorFragment selectorFragment = new SelectorFragment();
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.selector,selectorFragment).commit();
+                clickListener.onItemClick(singleData);
+                //clickedStructure = new Structure(singleData.getDrawableId(),"go");
+               // AppCompatActivity activity = (AppCompatActivity)view.getContext();
+              //  SelectorFragment selectorFragment = new SelectorFragment();
+              //  activity.getSupportFragmentManager().beginTransaction().replace(R.id.selector,selectorFragment).commit();
 
             }
         });
@@ -59,6 +63,9 @@ public class MyAdapterSelector extends RecyclerView.Adapter<MyDataVHSelector> {
 
     public Structure getClickedStructure(){
         return clickedStructure;
+    }
+    public interface itemClickListener{
+        public void onItemClick(Structure structure);
     }
 
 }

@@ -82,7 +82,7 @@ public class MapFragment extends Fragment {
         getParentFragmentManager().setFragmentResultListener("fromSelector", this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                structureID = result.getInt("structure");
+                structureID = result.getInt("id");
                 Toast.makeText(getContext(), "Worked " + structureID,
                         Toast.LENGTH_SHORT).show();
 
