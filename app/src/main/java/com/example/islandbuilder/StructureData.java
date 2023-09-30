@@ -82,4 +82,5 @@ public class StructureData
     {
         structureList.remove(i);
     }
+
 }

@@ -1,5 +1,7 @@
 package com.example.islandbuilder;
 
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,13 +9,18 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 
 import java.util.ArrayList;
 
 public class MyAdapterSelector extends RecyclerView.Adapter<MyDataVHSelector> {
 
     StructureData data;
+    Structure clickedStructure = new Structure(R.drawable.ic_building1,"house");
     public MyAdapterSelector(StructureData data){
         this.data = data;
     }
@@ -32,10 +39,26 @@ public class MyAdapterSelector extends RecyclerView.Adapter<MyDataVHSelector> {
         Structure singleData = data.get(position);
         holder.description.setText(singleData.getLabel());
         holder.image.setImageResource(singleData.getDrawableId());
+
+        holder.image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickedStructure = singleData;
+                AppCompatActivity activity = (AppCompatActivity)view.getContext();
+                SelectorFragment selectorFragment = new SelectorFragment();
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.selector,selectorFragment).commit();
+
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return data.size();
     }
+
+    public Structure getClickedStructure(){
+        return clickedStructure;
+    }
+
 }

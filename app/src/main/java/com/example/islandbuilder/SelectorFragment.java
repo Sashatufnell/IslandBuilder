@@ -6,9 +6,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,7 +29,7 @@ public class SelectorFragment extends Fragment {
     private String mParam2;
 
     StructureData sd = StructureData.get();
-
+    Structure lastStructure;
 
 
     public SelectorFragment() {
@@ -70,6 +72,15 @@ public class SelectorFragment extends Fragment {
         rv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false));
         MyAdapterSelector adapter = new MyAdapterSelector(sd);
         rv.setAdapter(adapter);
+        Bundle result = new Bundle();
+        if(adapter.getClickedStructure()!=null){
+            Toast.makeText(getContext(), "Worked ",
+                    Toast.LENGTH_SHORT).show();
+            lastStructure = adapter.getClickedStructure();
+            result.putInt("id",lastStructure.getDrawableId());
+            getParentFragmentManager().setFragmentResult("fromSelector", result);
+        }
+
         return rootView;
     }
 }

@@ -4,7 +4,9 @@ import static androidx.recyclerview.widget.GridLayoutManager.*;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.zip.Inflater;
 
@@ -32,6 +35,7 @@ public class MapFragment extends Fragment {
     private String mParam2;
 
     MapData md  = MapData.get();
+    int structureID;
     public MapFragment() {
         // Required empty public constructor
     }
@@ -75,6 +79,15 @@ public class MapFragment extends Fragment {
         rv.setLayoutManager(gridLayoutManager);
         MyDataAdapter adapter = new MyDataAdapter(md);
         rv.setAdapter(adapter);
+        getParentFragmentManager().setFragmentResultListener("fromSelector", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                structureID = result.getInt("structure");
+                Toast.makeText(getContext(), "Worked " + structureID,
+                        Toast.LENGTH_SHORT).show();
+
+            }
+        });
         return rootView;
 
     }
