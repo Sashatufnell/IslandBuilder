@@ -83,8 +83,7 @@ public class MapFragment extends Fragment {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
                 structureID = result.getInt("id");
-                Toast.makeText(getContext(), "Worked " + structureID,
-                        Toast.LENGTH_SHORT).show();
+
                 adapter.setStructure(structureID);
 
             }

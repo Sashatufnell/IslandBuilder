@@ -1,5 +1,6 @@
 package com.example.islandbuilder;
 
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,30 +38,19 @@ public class MyDataAdapter extends RecyclerView.Adapter<MyDataVH> {
         holder.topL.setImageResource(singleData.getNorthEast());
         holder.bottomL.setImageResource(singleData.getSouthWest());
         holder.bottomR.setImageResource(singleData.getSouthEast());
-        holder.topL.setOnClickListener(new View.OnClickListener() {
+        holder.overTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(id!=-99){holder.topL.setImageResource(id);}
+                if(singleData.getStructure()==null){
+                if(id!=-99){holder.overTop.setImageResource(id); data.get(row,col).setStructure(new Structure(id,""));
+                ;Toast.makeText(view.getContext(), "Structure Added!",
+                            Toast.LENGTH_SHORT).show();}}
+                else{holder.overTop.setImageResource(android.R.color.transparent);data.get(row,col).setStructure(null);
+                    Toast.makeText(view.getContext(), "Structure Removed!",
+                            Toast.LENGTH_SHORT).show();}
             }
         });
-        holder.topR.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(id!=-99){holder.topR.setImageResource(id);}
-            }
-        });
-        holder.bottomL.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(id!=-99){holder.bottomL.setImageResource(id);}
-            }
-        });
-        holder.bottomR.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(id!=-99){holder.bottomR.setImageResource(id);}
-            }
-        });
+
 
     }
 
