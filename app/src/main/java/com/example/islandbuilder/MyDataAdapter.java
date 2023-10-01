@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class MyDataAdapter extends RecyclerView.Adapter<MyDataVH> {
 
     MapData data;
+    int id=-99;
     public MyDataAdapter(MapData data){
         this.data = data;
     }
@@ -36,11 +37,39 @@ public class MyDataAdapter extends RecyclerView.Adapter<MyDataVH> {
         holder.topL.setImageResource(singleData.getNorthEast());
         holder.bottomL.setImageResource(singleData.getSouthWest());
         holder.bottomR.setImageResource(singleData.getSouthEast());
+        holder.topL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(id!=-99){holder.topL.setImageResource(id);}
+            }
+        });
+        holder.topR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(id!=-99){holder.topR.setImageResource(id);}
+            }
+        });
+        holder.bottomL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(id!=-99){holder.bottomL.setImageResource(id);}
+            }
+        });
+        holder.bottomR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(id!=-99){holder.bottomR.setImageResource(id);}
+            }
+        });
 
     }
 
     @Override
     public int getItemCount() {
         return data.HEIGHT*data.WIDTH;
+    }
+
+    public void setStructure(int id){
+        this.id = id;
     }
 }

@@ -85,6 +85,7 @@ public class MapFragment extends Fragment {
                 structureID = result.getInt("id");
                 Toast.makeText(getContext(), "Worked " + structureID,
                         Toast.LENGTH_SHORT).show();
+                adapter.setStructure(structureID);
 
             }
         });
