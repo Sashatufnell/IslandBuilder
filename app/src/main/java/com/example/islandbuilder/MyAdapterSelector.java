@@ -1,11 +1,15 @@
 package com.example.islandbuilder;
 
+import android.content.ClipData;
+import android.content.ClipDescription;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,9 +26,12 @@ public class MyAdapterSelector extends RecyclerView.Adapter<MyDataVHSelector> {
     StructureData data;
     Structure clickedStructure;
     itemClickListener clickListener;
-    public MyAdapterSelector(StructureData data, itemClickListener clickListener){
+    Context c;
+
+    public MyAdapterSelector(StructureData data, itemClickListener clickListener, Context c){
         this.data = data;
         this.clickListener = clickListener;
+        this.c = c;
         clickedStructure = new Structure(R.drawable.ic_building1,"wait");
     }
     @NonNull
@@ -42,7 +49,7 @@ public class MyAdapterSelector extends RecyclerView.Adapter<MyDataVHSelector> {
         Structure singleData = data.get(position);
         holder.description.setText(singleData.getLabel());
         holder.image.setImageResource(singleData.getDrawableId());
-
+        ImageView imageView = new ImageView(c);;
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,6 +60,31 @@ public class MyAdapterSelector extends RecyclerView.Adapter<MyDataVHSelector> {
               //  activity.getSupportFragmentManager().beginTransaction().replace(R.id.selector,selectorFragment).commit();
 
             }
+        });
+
+        holder.image.setTag("Image");
+
+        holder.image.setOnLongClickListener( v -> {
+
+            Toast.makeText(c,"long click", Toast.LENGTH_LONG).show();
+            ClipData.Item item = new ClipData.Item((CharSequence) v.getTag());
+
+            ClipData dragData = new ClipData(
+                    (CharSequence) v.getTag(),
+                    new String[] { ClipDescription.MIMETYPE_TEXT_PLAIN },
+                    item);
+
+
+            View.DragShadowBuilder myShadow = new MyDragShadowBuilder(imageView);
+
+
+            v.startDragAndDrop(dragData,  // The data to be dragged.
+                    myShadow,  // The drag shadow builder.
+                    null,      // No need to use local data.
+                    0          // Flags. Not currently used, set to 0.
+            );
+
+            return true;
         });
     }
 

@@ -1,10 +1,15 @@
 package com.example.islandbuilder;
 
+import android.content.ClipData;
+import android.content.ClipDescription;
+import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,8 +21,10 @@ public class MyDataAdapter extends RecyclerView.Adapter<MyDataVH> {
 
     MapData data;
     int id=-99;
-    public MyDataAdapter(MapData data){
+    Context c;
+    public MyDataAdapter(MapData data,Context c){
         this.data = data;
+        this.c = c;
     }
     @NonNull
     @Override
@@ -49,6 +56,63 @@ public class MyDataAdapter extends RecyclerView.Adapter<MyDataVH> {
                     Toast.makeText(view.getContext(), "Structure Removed!",
                             Toast.LENGTH_SHORT).show();}
             }
+        });
+
+
+        View imageView;
+        imageView = new ImageView(c);
+
+        imageView.setOnDragListener( (v, e) -> {
+            switch(e.getAction()) {
+                case DragEvent.ACTION_DRAG_STARTED:
+                    if (e.getClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
+
+                        ((ImageView)v).setColorFilter(Color.BLUE);
+                        v.invalidate();
+                        return true;
+                    }
+                    return false;
+
+                case DragEvent.ACTION_DRAG_ENTERED:
+                    ((ImageView)v).setColorFilter(Color.GREEN);
+                    v.invalidate();
+                    return true;
+
+                case DragEvent.ACTION_DRAG_LOCATION:
+                    return true;
+
+                case DragEvent.ACTION_DRAG_EXITED:
+                    ((ImageView)v).setColorFilter(Color.BLUE);
+                    v.invalidate();
+                    return true;
+
+                case DragEvent.ACTION_DROP:
+                    ClipData.Item item = e.getClipData().getItemAt(0);
+                    CharSequence dragData = item.getText();
+                    Toast.makeText(c, "Dragged data is " + dragData, Toast.LENGTH_LONG).show();
+
+                    ((ImageView)v).clearColorFilter();
+                    v.invalidate();
+                    return true;
+
+                case DragEvent.ACTION_DRAG_ENDED:
+                    ((ImageView)v).clearColorFilter();
+                    v.invalidate();
+                    if (e.getResult()) {
+                        Toast.makeText(v.getContext(), "The drop was handled.", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(v.getContext(), "The drop didn't work.", Toast.LENGTH_LONG).show();
+                    }
+
+                    return true;
+
+                default:
+                    Log.e("DragDrop Example","Unknown action type received by View.OnDragListener.");
+                    break;
+            }
+
+            return false;
+
         });
 
 

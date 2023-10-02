@@ -2,7 +2,10 @@ package com.example.islandbuilder;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,6 +13,7 @@ import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 /**
@@ -30,6 +34,7 @@ public class SelectorFragment extends Fragment implements MyAdapterSelector.item
 
     StructureData sd = StructureData.get();
     Structure lastStructure;
+    ImageView imageView;
 
 
     public SelectorFragment() {
@@ -70,18 +75,9 @@ public class SelectorFragment extends Fragment implements MyAdapterSelector.item
         RecyclerView rv= rootView.findViewById(R.id.selectorRecyclerView);
         /* For setting vertical scrolling*/
         rv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false));
-        MyAdapterSelector adapter = new MyAdapterSelector(sd,this);
+        MyAdapterSelector adapter = new MyAdapterSelector(sd,this,getContext());
         rv.setAdapter(adapter);
 
-
-       // if(adapter.getClickedStructure()!=null) {
-         //   if (adapter.getClickedStructure().getLabel().equals("go")) {
-         //       Toast.makeText(getContext(), "Worked ",
-          //              Toast.LENGTH_SHORT).show();
-           //     lastStructure = adapter.getClickedStructure();
-
-        //    }
-        //}
 
         return rootView;
     }
@@ -91,7 +87,18 @@ public class SelectorFragment extends Fragment implements MyAdapterSelector.item
         Bundle result = new Bundle();
         result.putInt("id", structure.getDrawableId());
         getParentFragmentManager().setFragmentResult("fromSelector", result);
-
-
     }
+
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN |
+            ItemTouchHelper.START | ItemTouchHelper.END,0) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+        }
+    };
 }

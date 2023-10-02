@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class MyDataVHSelector extends RecyclerView.ViewHolder{
     public TextView description;
     public ImageView image;
+
     public MyDataVHSelector(@NonNull View itemView, ViewGroup parent) {
         super(itemView);
         int hSize = parent.getMeasuredHeight() /3;

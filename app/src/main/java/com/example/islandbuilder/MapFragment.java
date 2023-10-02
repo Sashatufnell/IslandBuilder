@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.zip.Inflater;
@@ -73,11 +74,12 @@ public class MapFragment extends Fragment {
         View rootView =  inflater.inflate(R.layout.fragment_map, container, false);
         RecyclerView rv= rootView.findViewById(R.id.mapRecyclerView);
         int spanCount = md.HEIGHT;
+        Button regenMap = rootView.findViewById(R.id.regenerate);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), spanCount,
                HORIZONTAL, false);
         //rv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false));
         rv.setLayoutManager(gridLayoutManager);
-        MyDataAdapter adapter = new MyDataAdapter(md);
+        MyDataAdapter adapter = new MyDataAdapter(md,getContext());
         rv.setAdapter(adapter);
         getParentFragmentManager().setFragmentResultListener("fromSelector", this, new FragmentResultListener() {
             @Override
@@ -86,6 +88,13 @@ public class MapFragment extends Fragment {
 
                 adapter.setStructure(structureID);
 
+            }
+        });
+        regenMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                md.regenerate();
+                adapter.notifyItemRangeChanged(0, MapData.WIDTH * MapData.HEIGHT);
             }
         });
         return rootView;
